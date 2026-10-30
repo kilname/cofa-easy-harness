@@ -17,7 +17,7 @@ git clone --depth 1 https://github.com/kilname/cofa-easy-harness.git .cofa-harne
 python3 .cofa-harness/install.py .
 ```
 
-실제 공개된 `OWNER/REPO`로 바꿔야 하며, 먼저 클론과 설치가 허용되는지 확인하세요. 기존 `.cofa-harness`가 있을 때 덮어쓰지 마세요.
+먼저 클론과 설치가 허용되는지 확인하세요. 기존 `.cofa-harness`가 있을 때 덮어쓰지 마세요.
 
 **핵심 프롬프트:**
 
@@ -25,7 +25,6 @@ python3 .cofa-harness/install.py .
 
 하네스 파일 구조, 설치·테스트는 `doctor.py`와 `tests/`로 확인할 수 있습니다. 이는 시험 환경에서의 안전성·정확성 보증이 아닙니다.
 
-- [규정과 미확인 사항](RULES_AND_LIMITS.md)
 - [설치 안내](START_HERE.md)
 - [범용 검증 Skill](.agents/skills/critical-verification/SKILL.md)
 

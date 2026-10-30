@@ -1,4 +1,4 @@
-# Cofa Easy Harness v2 (비공식 · Codex용)
+# Cofa Easy Harness v2 — Shell edition (비공식 · Codex용)
 
 **비공식 준비 자료이며 실제 과제의 정답·코드를 포함하지 않습니다.**
 
@@ -10,11 +10,11 @@
 
 **처음 보는 사람:** [`START_HERE.md`](START_HERE.md)를 확인하세요. 입력 문장 하나만 알면 시작할 수 있습니다.
 
-**사용법 (이미 작업 폴더에 README.md가 있을 때):**
+**사용법 (과제 README.md가 있는 디렉터리의 POSIX sh 지원 터미널):**
 
 ```bash
 git clone --depth 1 https://github.com/kilname/cofa-easy-harness.git .cofa-harness
-python3 .cofa-harness/install.py .
+sh .cofa-harness/install.sh .
 ```
 
 먼저 클론과 설치가 허용되는지 확인하세요. 기존 `.cofa-harness`가 있을 때 덮어쓰지 마세요.
@@ -23,7 +23,7 @@ python3 .cofa-harness/install.py .
 
 > README.md를 읽고 AGENTS.md 절차대로 필수 기능을 실제 구현하고 검증해줘. 미확정 핵심 사항은 먼저 질문해줘.
 
-하네스 파일 구조, 설치·테스트는 `doctor.py`와 `tests/`로 확인할 수 있습니다. 이는 시험 환경에서의 안전성·정확성 보증이 아닙니다.
+하네스 파일 구조는 `sh doctor.sh`, 설치기 테스트는 `sh tests/test_harness.sh`로 점검합니다. 이는 시험 환경에서의 안전성·정확성 보증이 아닙니다.
 
 - [설치 안내](START_HERE.md)
 - [범용 검증 Skill](.agents/skills/critical-verification/SKILL.md)

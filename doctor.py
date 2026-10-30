@@ -3,7 +3,7 @@
 from pathlib import Path
 import sys
 root = Path(__file__).resolve().parent
-paths = [root/'AGENTS.md', root/'.agents/skills/critical-verification/SKILL.md', root/'install.py', root/'START_HERE.md',root/'RULES_AND_LIMITS.md']
+paths = [root/'AGENTS.md', root/'.agents/skills/critical-verification/SKILL.md', root/'install.py', root/'START_HERE.md']
 errors=[]
 for p in paths:
     if not p.is_file(): errors.append('missing '+str(p.relative_to(root)))
@@ -13,7 +13,7 @@ if not errors:
         errors.append('skill frontmatter malformed')
     if '실제 실행' not in (root/'AGENTS.md').read_text(encoding='utf-8'):
         errors.append('missing evidence instruction')
-    if 'Git Push' not in (root/'RULES_AND_LIMITS.md').read_text(encoding='utf-8'):
+    if 'git push' not in (root/'AGENTS.md').read_text(encoding='utf-8').lower():
         errors.append('missing outbound guidance')
 for e in errors:print('FAIL',e)
 if errors:sys.exit(1)

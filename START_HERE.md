@@ -4,10 +4,10 @@
 
 ## 평소 연습: 준비 → 실행
 
-작업 폴더에 `README.md`가 있어야 한다. Python 3가 있으면 하네스를 푼 폴더에서 아래를 입력한다.
+작업 폴더에 `README.md`가 있어야 한다. POSIX sh가 있는 Linux/macOS 또는 Windows의 Git Bash·WSL 같은 셸 환경에서 하네스를 푼 폴더의 설치기를 호출한다. **PowerShell만 있는 Windows에서는 `sh` 명령이 바로 실행되지 않을 수 있다.**
 
-```powershell
-python install.py "C:\내프로젝트"
+```sh
+sh install.sh "/path/to/project"
 ```
 
 그런 다음 **프로젝트 폴더**에서 Codex를 새로 켜고 한 문장만 입력한다.
@@ -25,12 +25,12 @@ PDF 기준 개인 PC 파일 업로드는 금지되어 있으며, 공개 GitHub�
 ```bash
 # 작업공간 안에서 실행 (허용된 terminal/git 사용)
 git clone --depth 1 https://github.com/kilname/cofa-easy-harness.git .cofa-harness
-python3 .cofa-harness/install.py .
+sh .cofa-harness/install.sh .
 ```
 
 - 이미 `.cofa-harness` 폴더가 존재한다면 덮어쓰거나 삭제하지 말고 내용을 먼저 확인한다.
-- `install.py`는 **대상에 README.md가 있을 때** 일반 지침과 Skill만 설치한다. 기존 사용자 작업은 덮어쓰지 않는다.
-- `python3`가 없거나 도구/외부 네트워크 사용이 차단되면 **우회하지 말고** Cofa Helper로 확인한다.
+- `install.sh`는 **대상에 README.md가 있을 때** 일반 지침과 Skill만 설치한다. 기존 사용자 작업은 덮어쓰지 않는다.
+- `sh`가 없거나 도구/외부 네트워크 사용이 차단되면 **우회하지 말고** Cofa Helper로 확인한다.
 - 자동 인식이 불확실하면 Codex에게 현재 프로젝트의 `AGENTS.md`와 `.agents/skills/critical-verification/SKILL.md`를 읽었는지 확인하도록 한다.
 - `.cofa-harness`가 작업 폴더 안에 남는다. **제출 파일 경로를 점검하고** 불필요한 준비 자료가 제출 대상이 되지 않는지 확인한다. 삭제는 명시적으로 승인된 범위에서만.
 
@@ -46,5 +46,5 @@ python3 .cofa-harness/install.py .
 
 ## 자체 점검
 
-`python3 doctor.py`는 파일 구성이 있는지만 검사한다. 시험 정책 준수나 실전 문제 해결을 보증하지 않는다. 
-`python3 -m unittest discover -s tests -v` 는 설치기/문서 구성에 대한 로컬 테스트다.
+`sh doctor.sh`는 파일 구성이 있는지만 검사한다. 시험 정책 준수나 실전 문제 해결을 보증하지 않는다. 
+`sh tests/test_harness.sh` 는 설치기/문서 구성에 대한 로컬 테스트다.

@@ -22,6 +22,12 @@ grep -Fq '## 0-1. 작업 모드' "$p/AGENTS.md" || fail 'mode instructions missi
 grep -Fq '학습 모드에서는 명시적으로 요청받지 않은' "$p/COFA_WORKFLOW.md" || fail 'learning guard missing in workflow'
 grep -Fq '**실전 모드:**' "$p/AGENTS.md" || fail 'practical mode missing'
 pass 'learning and practical mode instructions installed'
+grep -Fq '## 0-2. 학습 모드 강화' "$p/AGENTS.md" || fail 'learner-first protocol missing'
+grep -Fq '원래 질문에서 요구한 범위' "$p/COFA_WORKFLOW.md" || fail 'scope-aware grading missing'
+grep -Fq '배정의 불변 제약(hard constraint)' "$p/AGENTS.md" || fail 'requirements taxonomy missing'
+grep -Fq '## 0-3. 실전 모드 강화' "$p/AGENTS.md" || fail 'practical learning guard missing'
+grep -Fq '후속 서술형 단계의 AI 사용 및 답안 생성은 금지' "$p/AGENTS.md" || fail 'post-submission no-AI missing'
+pass 'v3 learning quality and exam boundaries installed'
 cp "$p/AGENTS.md" "$tmp/first-agents"
 sh "$root/install.sh" "$p" >/dev/null || fail 'second install'
 cmp -s "$p/AGENTS.md" "$tmp/first-agents" || fail 'reinstall changed AGENTS'

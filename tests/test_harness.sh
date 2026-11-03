@@ -28,6 +28,10 @@ grep -Fq '배정의 불변 제약(hard constraint)' "$p/AGENTS.md" || fail 'requ
 grep -Fq '## 0-3. 실전 모드 강화' "$p/AGENTS.md" || fail 'practical learning guard missing'
 grep -Fq '후속 서술형 단계의 AI 사용 및 답안 생성은 금지' "$p/AGENTS.md" || fail 'post-submission no-AI missing'
 pass 'v3 learning quality and exam boundaries installed'
+grep -Fq '## 0-4. 시간제한 과제: 분석과 개발을 교차 진행' "$p/AGENTS.md" || fail 'iterative analysis/build protocol missing'
+grep -Fq '확정된 기반 작업은 즉시 구현한다' "$p/COFA_WORKFLOW.md" || fail 'early implementation guard missing'
+grep -Fq '미확정 정책은 차단 여부를 구분한다' "$p/AGENTS.md" || fail 'policy blocking distinction missing'
+pass 'timeboxed iterative build and policy boundaries installed'
 cp "$p/AGENTS.md" "$tmp/first-agents"
 sh "$root/install.sh" "$p" >/dev/null || fail 'second install'
 cmp -s "$p/AGENTS.md" "$tmp/first-agents" || fail 'reinstall changed AGENTS'

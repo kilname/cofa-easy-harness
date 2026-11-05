@@ -3,7 +3,7 @@
 set -eu
 root=$(CDPATH= cd -P "$(dirname "$0")" && pwd -P)
 failed=0
-for item in AGENTS.md install.sh START_HERE.md .agents/skills/critical-verification/SKILL.md; do
+for item in AGENTS.md COFA_DUAL_SESSION.md install.sh START_HERE.md .agents/skills/critical-verification/SKILL.md; do
   if [ ! -f "$root/$item" ]; then
     echo "FAIL missing: $item"
     failed=1
@@ -16,6 +16,10 @@ if ! grep -Fq 'name: critical-verification' "$root/.agents/skills/critical-verif
 fi
 if ! grep -Fq 'git push' "$root/AGENTS.md"; then
   echo 'FAIL outbound protection instruction missing'
+  exit 1
+fi
+if ! grep -Fq 'COFA_TO_A.md' "$root/COFA_DUAL_SESSION.md"; then
+  echo 'FAIL dual-session handoff guidance missing'
   exit 1
 fi
 echo 'PASS: expected instruction files and basic markers exist'

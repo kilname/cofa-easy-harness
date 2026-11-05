@@ -62,6 +62,11 @@ grep -Fq '## 이것 하나만 기억: START_HERE.md' "$p/START_HERE.md" || fail 
 grep -Fq 'START_HERE.md 읽고 개발 A로 시작해줘' "$p/START_HERE.md" || fail 'A prompt not discoverable'
 grep -Fq 'COFA_DUAL_SESSION.md' "$p/START_HERE.md" || fail 'detailed role instructions not linked'
 pass 'START_HERE.md single user-memorized entrypoint installed'
+grep -Fq 'Astra 사용은 제한된다' "$p/AGENTS.md" || fail 'official model limitation missing'
+grep -Fq '별도 AI 모델을 연결하는 MCP' "$p/AGENTS.md" || fail 'AI via MCP disallowance missing'
+grep -Fq '제출 미리보기는 파일 일부만 표시될 수 있다' "$p/START_HERE.md" || fail 'submission preview limitation missing'
+grep -Fq '.cofa-harness/' "$p/COFA_DUAL_SESSION.md" || fail 'harness artifact submission caution missing'
+pass 'November 5 official model and submission scope safeguards installed'
 cp "$p/AGENTS.md" "$tmp/first-agents"
 cp "$p/START_HERE.md" "$tmp/first-start"
 sh "$root/install.sh" "$p" >/dev/null || fail 'second install'

@@ -39,6 +39,13 @@ grep -Fq '## 0-6. 실전 품질 게이트' "$p/AGENTS.md" || fail 'quality gate 
 grep -Fq '미착수 / 구현 중 / 실제 검증 통과 / 실패 / 미검증' "$p/COFA_WORKFLOW.md" || fail 'requirements evidence statuses missing'
 grep -Fq '금지된 서술형 단계에는 AI 호출·답안 작성·검토를 중단한다' "$p/AGENTS.md" || fail 'exam boundary missing'
 pass 'just-in-time learning, quality gates, exam boundaries installed'
+grep -Fq '## 0-7. 실전 사용자 검토 게이트' "$p/AGENTS.md" || fail 'user review gates missing'
+grep -Fq '검토 ① 시작 직후' "$p/COFA_WORKFLOW.md" || fail 'initial user review missing'
+grep -Fq '검토 ② 핵심 설계 확정 전' "$p/AGENTS.md" || fail 'material design review missing'
+grep -Fq '검토 ③ 최종 제출 직전' "$p/AGENTS.md" || fail 'final user evidence review missing'
+grep -Fq '업무 정책이나 파괴적·외부 작업 등 명시적 승인이 필요한 결정' "$p/AGENTS.md" || fail 'user authority boundary missing'
+grep -Fq '테스트 PASS를 사용자 승인으로 대체하지 않고' "$p/COFA_WORKFLOW.md" || fail 'verification distinction missing'
+pass 'user material review checkpoints and boundaries installed'
 cp "$p/AGENTS.md" "$tmp/first-agents"
 sh "$root/install.sh" "$p" >/dev/null || fail 'second install'
 cmp -s "$p/AGENTS.md" "$tmp/first-agents" || fail 'reinstall changed AGENTS'

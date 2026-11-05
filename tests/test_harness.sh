@@ -14,7 +14,7 @@ new_project() {
 }
 new_project clean
 sh "$root/install.sh" "$p" >/dev/null || fail 'fresh install'
-[ -f "$p/AGENTS.md" ] && [ -f "$p/COFA_WORKFLOW.md" ] && [ -f "$p/.agents/skills/critical-verification/SKILL.md" ] || fail 'fresh files'
+[ -f "$p/AGENTS.md" ] && [ -f "$p/COFA_WORKFLOW.md" ] && [ -f "$p/COFA_DUAL_SESSION.md" ] && [ -f "$p/.agents/skills/critical-verification/SKILL.md" ] || fail 'fresh files'
 grep -Fq 'important original code' "$p/app.js" || fail 'source preservation'
 grep -Fq '# sample project' "$p/README.md" || fail 'README preservation'
 pass 'fresh install preserves project source'
@@ -46,10 +46,22 @@ grep -Fq '검토 ③ 최종 제출 직전' "$p/AGENTS.md" || fail 'final user ev
 grep -Fq '업무 정책이나 파괴적·외부 작업 등 명시적 승인이 필요한 결정' "$p/AGENTS.md" || fail 'user authority boundary missing'
 grep -Fq '테스트 PASS를 사용자 승인으로 대체하지 않고' "$p/COFA_WORKFLOW.md" || fail 'verification distinction missing'
 pass 'user material review checkpoints and boundaries installed'
+grep -Fq '## 0-8. 두 터미널 A/B 공유 폴더 운영' "$p/AGENTS.md" || fail 'dual-session role instructions absent'
+grep -Fq 'B는 개발을 수행하지 않는 튜터' "$p/COFA_WORKFLOW.md" || fail 'tutor is not developer instruction missing'
+grep -Fq 'COFA_TO_A.md' "$p/COFA_DUAL_SESSION.md" || fail 'handoff file contract missing'
+grep -Fq '실제 읽기 전용 sandbox' "$p/COFA_WORKFLOW.md" || fail 'read-only caveat missing'
+[ ! -e "$p/COFA_TO_A.md" ] || fail 'installer generated unrequested handoff'
+pass 'dual terminal A/B guide and local-only handoff protocol installed'
 cp "$p/AGENTS.md" "$tmp/first-agents"
 sh "$root/install.sh" "$p" >/dev/null || fail 'second install'
 cmp -s "$p/AGENTS.md" "$tmp/first-agents" || fail 'reinstall changed AGENTS'
+grep -Fq 'COFA_TO_A.md' "$p/COFA_DUAL_SESSION.md" || fail 'reinstall changed dual guide'
 pass 'idempotent reinstall'
+new_project keep_guide
+printf 'MY OWN INSTRUCTIONS\n' > "$p/COFA_DUAL_SESSION.md"
+sh "$root/install.sh" "$p" >/dev/null || fail 'install preserves existing dual guide'
+grep -Fq 'MY OWN INSTRUCTIONS' "$p/COFA_DUAL_SESSION.md" || fail 'existing dual guide overwritten'
+pass 'existing dual guide preserved'
 new_project existing
 printf 'USER_POLICY: keep this\n' > "$p/AGENTS.md"
 sh "$root/install.sh" "$p" >/dev/null || fail 'existing AGENTS install'
@@ -70,7 +82,7 @@ grep -Fq 'ORIGINAL SKILL' "$p/.agents/skills/critical-verification/SKILL.md" || 
 pass 'existing skill preserved'
 new_project dry
 sh "$root/install.sh" --dry-run "$p" >/dev/null || fail 'dry run'
-[ ! -e "$p/AGENTS.md" ] && [ ! -e "$p/.agents" ] || fail 'dry run changed files'
+[ ! -e "$p/AGENTS.md" ] && [ ! -e "$p/.agents" ] && [ ! -e "$p/COFA_DUAL_SESSION.md" ] || fail 'dry run changed files'
 pass 'dry run no writes'
 mkdir -p "$tmp/no_readme"
 if sh "$root/install.sh" "$tmp/no_readme" >/dev/null 2>&1; then fail 'missing README accepted'; fi
@@ -81,6 +93,11 @@ ln -s "$tmp/outside" "$p/AGENTS.md"
 if sh "$root/install.sh" "$p" >/dev/null 2>&1; then fail 'symlink accepted'; fi
 grep -Fq 'protected' "$tmp/outside" || fail 'outside file was damaged'
 pass 'symlink rejected'
+new_project symlink_guide
+ln -s "$tmp/outside" "$p/COFA_DUAL_SESSION.md"
+if sh "$root/install.sh" "$p" >/dev/null 2>&1; then fail 'dual guide symlink accepted'; fi
+grep -Fq 'protected' "$tmp/outside" || fail 'dual guide symlink outside changed'
+pass 'dual guide symlink rejected'
 sh "$root/doctor.sh" >/dev/null || fail 'doctor'
 pass 'doctor structure checks'
 echo "PASS: $n shell harness tests"

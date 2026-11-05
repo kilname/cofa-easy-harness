@@ -13,7 +13,7 @@
 - **실전 모드(기본):** 초기 핵심 분석 후 **확정된 필수 기능을 구현·즉시 테스트**한다. **사용자 핵심 검토 3회(요구사항·설계 선택·실제 검증 결과)**를 개발 과정 안에 포함하되, 사소한 사항까지 매번 승인받지는 않는다. 사용한 기술은 실제 코드 근거로 짧게 설명한다.
 - 모드 전환은 Codex에 한 문장만 입력하면 된다. **선택 구성: 같은 프로젝트 폴더에서 B(학습·검토)를 먼저 시작해 문제를 이해하고, B가 최초 `COFA_TO_A.md` 개발 지시서를 작성하면 사용자가 A(개발)에 전달한다. A 개발 중에도 B와 학습·검토를 계속하고 이후 수정 요청도 같은 파일로 전달한다.** 이 방식은 Codex 세션 간 자동 연결이나 하위 에이전트를 사용하지 않는다. 상세 사용법은 [START_HERE.md](START_HERE.md)와 [COFA_DUAL_SESSION.md](COFA_DUAL_SESSION.md)에 있다.
 
-**처음 보는 사람:** [`START_HERE.md`](START_HERE.md)를 확인하세요. 입력 문장 하나만 알면 시작할 수 있습니다.
+**처음 보는 사람:** [`START_HERE.md`](START_HERE.md) **파일명 하나만 기억하세요.** 설치기가 과제 폴더에 이 파일을 추가하므로, Codex에 'START_HERE.md 읽고 튜터 B부터 시작해줘'라고 말하면 내부 상세 지침도 스스로 찾아 읽도록 안내합니다. 기존 파일이 있으면 덮어쓰지 않습니다.
 
 **사용법 (과제 README.md가 있는 디렉터리의 POSIX sh 지원 터미널):**
 
@@ -32,6 +32,6 @@ sh .cofa-harness/install.sh .
 
 - [설치 안내](START_HERE.md)
 - [범용 검증 Skill](.agents/skills/critical-verification/SKILL.md)
-- [A/B 두 터미널 역할·지시서 전달](COFA_DUAL_SESSION.md)
+- [A/B 두 터미널 역할·지시서 전달 — Codex가 내부적으로 읽는 상세 지침](COFA_DUAL_SESSION.md)
 
 공식 기관·주최사와 무관한 비공식 준비 자료입니다.

@@ -14,7 +14,7 @@ new_project() {
 }
 new_project clean
 sh "$root/install.sh" "$p" >/dev/null || fail 'fresh install'
-[ -f "$p/AGENTS.md" ] && [ -f "$p/COFA_WORKFLOW.md" ] && [ -f "$p/COFA_DUAL_SESSION.md" ] && [ -f "$p/.agents/skills/critical-verification/SKILL.md" ] || fail 'fresh files'
+[ -f "$p/AGENTS.md" ] && [ -f "$p/COFA_WORKFLOW.md" ] && [ -f "$p/COFA_DUAL_SESSION.md" ] && [ -f "$p/START_HERE.md" ] && [ -f "$p/.agents/skills/critical-verification/SKILL.md" ] || fail 'fresh files'
 grep -Fq 'important original code' "$p/app.js" || fail 'source preservation'
 grep -Fq '# sample project' "$p/README.md" || fail 'README preservation'
 pass 'fresh install preserves project source'
@@ -58,11 +58,22 @@ grep -Fq 'A가 이전 요청을 모두 읽었는지 확인' "$p/COFA_DUAL_SESSIO
 grep -Fq 'A가 시작한 이후에는 B의 설명을 기다리지 않고' "$p/AGENTS.md" || fail 'nonblocking A after B initial handoff missing'
 grep -Fq '**B 먼저 시작:**' "$root/START_HERE.md" || fail 'quickstart B-first command missing'
 pass 'B-first understanding, manual initial handoff, then concurrent learning installed'
+grep -Fq '## 이것 하나만 기억: START_HERE.md' "$p/START_HERE.md" || fail 'single entrypoint missing'
+grep -Fq 'START_HERE.md 읽고 개발 A로 시작해줘' "$p/START_HERE.md" || fail 'A prompt not discoverable'
+grep -Fq 'COFA_DUAL_SESSION.md' "$p/START_HERE.md" || fail 'detailed role instructions not linked'
+pass 'START_HERE.md single user-memorized entrypoint installed'
 cp "$p/AGENTS.md" "$tmp/first-agents"
+cp "$p/START_HERE.md" "$tmp/first-start"
 sh "$root/install.sh" "$p" >/dev/null || fail 'second install'
 cmp -s "$p/AGENTS.md" "$tmp/first-agents" || fail 'reinstall changed AGENTS'
+cmp -s "$p/START_HERE.md" "$tmp/first-start" || fail 'reinstall changed START_HERE'
 grep -Fq 'COFA_TO_A.md' "$p/COFA_DUAL_SESSION.md" || fail 'reinstall changed dual guide'
 pass 'idempotent reinstall'
+new_project keep_start
+printf 'MY START NOTES\n' > "$p/START_HERE.md"
+sh "$root/install.sh" "$p" >/dev/null || fail 'install preserves existing START_HERE'
+grep -Fq 'MY START NOTES' "$p/START_HERE.md" || fail 'existing START_HERE overwritten'
+pass 'existing START_HERE preserved'
 new_project keep_guide
 printf 'MY OWN INSTRUCTIONS\n' > "$p/COFA_DUAL_SESSION.md"
 sh "$root/install.sh" "$p" >/dev/null || fail 'install preserves existing dual guide'
@@ -88,7 +99,7 @@ grep -Fq 'ORIGINAL SKILL' "$p/.agents/skills/critical-verification/SKILL.md" || 
 pass 'existing skill preserved'
 new_project dry
 sh "$root/install.sh" --dry-run "$p" >/dev/null || fail 'dry run'
-[ ! -e "$p/AGENTS.md" ] && [ ! -e "$p/.agents" ] && [ ! -e "$p/COFA_DUAL_SESSION.md" ] || fail 'dry run changed files'
+[ ! -e "$p/AGENTS.md" ] && [ ! -e "$p/.agents" ] && [ ! -e "$p/COFA_DUAL_SESSION.md" ] && [ ! -e "$p/START_HERE.md" ] || fail 'dry run changed files'
 pass 'dry run no writes'
 mkdir -p "$tmp/no_readme"
 if sh "$root/install.sh" "$tmp/no_readme" >/dev/null 2>&1; then fail 'missing README accepted'; fi
@@ -104,6 +115,11 @@ ln -s "$tmp/outside" "$p/COFA_DUAL_SESSION.md"
 if sh "$root/install.sh" "$p" >/dev/null 2>&1; then fail 'dual guide symlink accepted'; fi
 grep -Fq 'protected' "$tmp/outside" || fail 'dual guide symlink outside changed'
 pass 'dual guide symlink rejected'
+new_project symlink_start
+ln -s "$tmp/outside" "$p/START_HERE.md"
+if sh "$root/install.sh" "$p" >/dev/null 2>&1; then fail 'START_HERE symlink accepted'; fi
+grep -Fq 'protected' "$tmp/outside" || fail 'START_HERE symlink outside changed'
+pass 'START_HERE symlink rejected'
 sh "$root/doctor.sh" >/dev/null || fail 'doctor'
 pass 'doctor structure checks'
 echo "PASS: $n shell harness tests"

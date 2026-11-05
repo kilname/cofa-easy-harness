@@ -32,6 +32,13 @@ grep -Fq '## 0-4. 시간제한 과제: 분석과 개발을 교차 진행' "$p/AG
 grep -Fq '확정된 기반 작업은 즉시 구현한다' "$p/COFA_WORKFLOW.md" || fail 'early implementation guard missing'
 grep -Fq '미확정 정책은 차단 여부를 구분한다' "$p/AGENTS.md" || fail 'policy blocking distinction missing'
 pass 'timeboxed iterative build and policy boundaries installed'
+grep -Fq '## 0-5. 실전 기본 동작: 개발을 멈추지 않는' "$p/AGENTS.md" || fail 'integrated practical learning missing'
+grep -Fq '설명 후 별도 승인·이해 확인을 기다리지 않고' "$p/COFA_WORKFLOW.md" || fail 'non-blocking explanation missing'
+grep -Fq '실제로 사용한 개념만' "$p/AGENTS.md" || fail 'concept grounding missing'
+grep -Fq '## 0-6. 실전 품질 게이트' "$p/AGENTS.md" || fail 'quality gate missing'
+grep -Fq '미착수 / 구현 중 / 실제 검증 통과 / 실패 / 미검증' "$p/COFA_WORKFLOW.md" || fail 'requirements evidence statuses missing'
+grep -Fq '금지된 서술형 단계에는 AI 호출·답안 작성·검토를 중단한다' "$p/AGENTS.md" || fail 'exam boundary missing'
+pass 'just-in-time learning, quality gates, exam boundaries installed'
 cp "$p/AGENTS.md" "$tmp/first-agents"
 sh "$root/install.sh" "$p" >/dev/null || fail 'second install'
 cmp -s "$p/AGENTS.md" "$tmp/first-agents" || fail 'reinstall changed AGENTS'

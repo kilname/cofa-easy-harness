@@ -52,6 +52,12 @@ grep -Fq 'COFA_TO_A.md' "$p/COFA_DUAL_SESSION.md" || fail 'handoff file contract
 grep -Fq '실제 읽기 전용 sandbox' "$p/COFA_WORKFLOW.md" || fail 'read-only caveat missing'
 [ ! -e "$p/COFA_TO_A.md" ] || fail 'installer generated unrequested handoff'
 pass 'dual terminal A/B guide and local-only handoff protocol installed'
+grep -Fq '## 기본 순서: B 먼저 → 최초 개발 지시서 → A 시작' "$p/COFA_DUAL_SESSION.md" || fail 'B-first execution order not found'
+grep -Fq '유형: 최초 개발 요청' "$p/COFA_DUAL_SESSION.md" || fail 'first-handoff contract missing'
+grep -Fq 'A가 이전 요청을 모두 읽었는지 확인' "$p/COFA_DUAL_SESSION.md" || fail 'handoff overwrite protection missing'
+grep -Fq 'A가 시작한 이후에는 B의 설명을 기다리지 않고' "$p/AGENTS.md" || fail 'nonblocking A after B initial handoff missing'
+grep -Fq '**B 먼저 시작:**' "$root/START_HERE.md" || fail 'quickstart B-first command missing'
+pass 'B-first understanding, manual initial handoff, then concurrent learning installed'
 cp "$p/AGENTS.md" "$tmp/first-agents"
 sh "$root/install.sh" "$p" >/dev/null || fail 'second install'
 cmp -s "$p/AGENTS.md" "$tmp/first-agents" || fail 'reinstall changed AGENTS'
